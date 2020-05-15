@@ -1,0 +1,4 @@
+#! /usr/bin/env bash
+
+# Start Node Server
+node index.js

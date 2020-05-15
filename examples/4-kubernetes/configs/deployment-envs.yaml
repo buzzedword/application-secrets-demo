@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+  labels:
+    app: demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: demo
+        image: demo:latest
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+        env:
+        - name: PGUSER
+          value: dbuser
+        - name: PGHOST
+          value: database.server.com
+        - name: PGPASSWORD
+          value: secretpassword
+        - name: PGDATABASE
+          value: mydb
+        - name: PGPORT
+          value: "3211"

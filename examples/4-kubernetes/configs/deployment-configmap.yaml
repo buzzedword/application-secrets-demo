@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-configuration
+  namespace: default
+data:
+  PGUSER: dbuser
+  PGHOST: database.server.com
+  PGPASSWORD: secretpassword
+  PGDATABASE: mydb
+  PGPORT: "3211"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+  labels:
+    app: demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: demo
+        image: demo:latest
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+        envFrom:
+        - configMapRef:
+            name: demo-configuration

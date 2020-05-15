@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+# Set environmental variables in the operating system that Node can access
+export PGUSER=dbuser
+export PGHOST=database.server.com
+export PGPASSWORD=secretpassword
+export PGDATABASE=mydb
+export PGPORT=3211
+
+# Start Node Server
+node index.js

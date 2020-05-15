@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+  labels:
+    app: demo
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject-secret-demo: database/roles/app
+        vault.hashicorp.com/role: 'app'
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: demo
+        image: demo:latest
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+        env:
+        - name: PGUSER
+          value: "vault:secrets/demo/database/roles/app#PGUSER"
+        - name: PGHOST
+          value: "vault:secrets/demo/database/roles/app#PGHOST"
+        - name: PGPASSWORD
+          value: "vault:secrets/demo/database/roles/app#PGPASSWORD"
+        - name: PGDATABASE
+          value: "vault:secrets/demo/database/roles/app#PGDATABASE"
+        - name: PGPORT
+          value: vault:secrets/demo/database/roles/app#PGPORT

@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+set -x
+
+# Decrypt encrypted configuration file
+keybase decrypt -i config.encrypted.ini -o config.decrypted.ini
+# Load environmental variables
+source <(grep = config.decrypted.ini)
+# Start Node Server
+node index.js
